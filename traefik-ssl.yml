@@ -34,7 +34,7 @@ services:
       # openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout domain.key -out domain.crt
       # chmod 644 /opt/traefik/certs/domain.crt
       # chmod 600 /opt/traefik/certs/domain.key 
-      - ./trafefik/certs:/certs/ # Tell Traefik to save SSL certs here
+      - ./traefik/certs:/certs/ # Tell Traefik to save SSL certs here
 # create traefik-proxy network first
 # docker network create traefik_proxy
 networks:

@@ -28,3 +28,7 @@ labels:
 	- "traefik.port=8080"
 	- "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
 ```
+
+```
+$ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout webapp.test.key -out webapp.test.crt
+```
