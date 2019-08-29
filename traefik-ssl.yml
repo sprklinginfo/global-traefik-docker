@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  traefik:
+    image: traefik
+    command: --api --docker # Enables the web UI
+    ports:
+      - "80:80" # The HTTP port
+      - "443:443" # The HTTPS port
+      - "8080:8080" # The web UI
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=traefik"
+      - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
+#      - "traefik.frontend.rule=Host:${DOMAINNAME}; PathPrefixStrip: /traefik"
+      - "traefik.port=8080"
+      #- "traefik.docker.network=traefik_proxy"
+      # - "traefik.frontend.headers.SSLRedirect=true"
+      # - "traefik.frontend.headers.STSSeconds=315360000"
+      # - "traefik.frontend.headers.browserXSSFilter=true"
+      # - "traefik.frontend.headers.contentTypeNosniff=true"
+      # - "traefik.frontend.headers.forceSTSHeader=true"
+      # - "traefik.frontend.headers.SSLHost=example.com"
+      # - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      # - "traefik.frontend.headers.STSPreload=true"
+      # - "traefik.frontend.headers.frameDeny=true"
+      - "traefik.frontend.auth.basic=${HTTP_USERNAME}:${HTTP_PASSWORD}"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Traefik configuration file
+      - ./traefik/traefik-ssl.toml:/traefik.toml
+      # use openssl to generate certificates
+      # openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout domain.key -out domain.crt
+      # chmod 644 /opt/traefik/certs/domain.crt
+      # chmod 600 /opt/traefik/certs/domain.key 
+      - ./trafefik/certs:/certs/ # Tell Traefik to save SSL certs here
+# create traefik-proxy network first
+# docker network create traefik_proxy
+networks:
+  traefik_proxy:
+    external:
+      name: traefik_proxy

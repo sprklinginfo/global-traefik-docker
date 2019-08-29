@@ -1,0 +1,31 @@
+debug = false
+insecureSkipVerify = true
+
+logLevel = "ERROR"
+defaultEntryPoints = ["https","http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+    [[entryPoints.https.tls.certificates]]
+      certFile = "/certs/webapp.test.crt"
+      keyFile = "/certs/webapp.test.key"
+  [entryPoints.traefik]
+  address = ":8080"
+    [entryPoints.traefik.redirect]
+    entryPoint = "https"
+
+[retry]
+
+[docker]
+exposedByDefault = false
+
+[api]
+  entryPoint = "traefik"
+  dashboard = true
+  address = ":8080"
