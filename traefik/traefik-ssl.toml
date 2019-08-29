@@ -15,10 +15,6 @@ defaultEntryPoints = ["https","http"]
     [[entryPoints.https.tls.certificates]]
       certFile = "/certs/webapp.test.crt"
       keyFile = "/certs/webapp.test.key"
-  [entryPoints.traefik]
-  address = ":8080"
-    [entryPoints.traefik.redirect]
-    entryPoint = "https"
 
 [retry]
 
