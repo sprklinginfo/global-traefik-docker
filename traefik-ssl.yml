@@ -4,6 +4,8 @@ services:
   traefik:
     image: traefik
     command: --api --docker # Enables the web UI
+    networks:
+      - traefik_proxy
     ports:
       - "80:80" # The HTTP port
       - "443:443" # The HTTPS port
